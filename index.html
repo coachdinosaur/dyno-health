@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b6b57">
+  <meta name="description" content="A private, browser-based health companion for tracking arthritis, diabetes, high blood pressure, psoriasis, and eczema.">
+  <title>Dyno Health</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <header class="site-header">
+    <div class="brand-wrap">
+      <div class="brand-mark" aria-hidden="true">♥</div>
+      <div>
+        <p class="eyebrow">Private health companion</p>
+        <h1>Dyno Health</h1>
+      </div>
+    </div>
+    <button class="icon-button" id="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">◐</button>
+  </header>
+
+  <nav class="tab-bar" aria-label="Primary navigation">
+    <button class="tab active" data-view="today" type="button">Today</button>
+    <button class="tab" data-view="learn" type="button">Learn</button>
+    <button class="tab" data-view="track" type="button">Track</button>
+    <button class="tab" data-view="plan" type="button">My plan</button>
+    <button class="tab" data-view="sources" type="button">Sources</button>
+  </nav>
+
+  <main id="main-content">
+    <section class="view active" id="view-today" aria-labelledby="today-title">
+      <div class="hero panel">
+        <div>
+          <p class="eyebrow">One place, five conditions</p>
+          <h2 id="today-title">Understand patterns. Prepare better visits.</h2>
+          <p>Log readings, symptoms, skin or joint flares, and treatment notes. Your data stays in this browser unless you export it.</p>
+          <div class="button-row">
+            <button class="primary" type="button" data-go="track">Add a health entry</button>
+            <button class="secondary" type="button" data-go="learn">Open condition guides</button>
+          </div>
+        </div>
+        <div class="hero-meter" aria-label="Health tracking illustration">
+          <span>BP</span><span>Glucose</span><span>Joints</span><span>Skin</span>
+        </div>
+      </div>
+
+      <aside class="alert emergency-summary" aria-labelledby="urgent-title">
+        <div class="alert-icon" aria-hidden="true">!</div>
+        <div>
+          <h3 id="urgent-title">Know the urgent warning signs</h3>
+          <p>Seek emergency help for chest pain, trouble breathing, stroke signs, severe low blood sugar that cannot be treated, diabetic ketoacidosis warning signs, or a rapidly worsening serious infection. Use your local emergency number.</p>
+          <button class="text-button" type="button" id="open-red-flags">Review red flags</button>
+        </div>
+      </aside>
+
+      <section aria-labelledby="conditions-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Condition library</p>
+            <h2 id="conditions-title">Choose what matters today</h2>
+          </div>
+        </div>
+        <div class="condition-grid" id="condition-grid"></div>
+      </section>
+
+      <section class="dashboard-grid" aria-label="Today's overview">
+        <article class="panel metric-card">
+          <p class="eyebrow">Recent entries</p>
+          <strong id="entry-count">0</strong>
+          <span>saved on this device</span>
+        </article>
+        <article class="panel metric-card">
+          <p class="eyebrow">Last blood pressure</p>
+          <strong id="last-bp">No entry</strong>
+          <span id="last-bp-label">Add a reading to see its category</span>
+        </article>
+        <article class="panel metric-card">
+          <p class="eyebrow">Last glucose</p>
+          <strong id="last-glucose">No entry</strong>
+          <span id="last-glucose-label">Targets are set with your care team</span>
+        </article>
+      </section>
+    </section>
+
+    <section class="view" id="view-learn" aria-labelledby="learn-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Evidence-based basics</p>
+          <h2 id="learn-title">Condition guides</h2>
+          <p>Educational summaries, practical self-care, and signs that deserve medical attention.</p>
+        </div>
+      </div>
+      <div class="guide-picker" id="guide-picker" role="tablist" aria-label="Select condition guide"></div>
+      <article class="guide-layout" id="guide-content"></article>
+    </section>
+
+    <section class="view" id="view-track" aria-labelledby="track-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Private local tracking</p>
+          <h2 id="track-title">Track health information</h2>
+          <p>These tools organize observations. They do not diagnose a condition or replace your treatment plan.</p>
+        </div>
+      </div>
+
+      <div class="tracker-tabs" role="tablist" aria-label="Tracker type">
+        <button class="tracker-tab active" data-tracker="bp" type="button">Blood pressure</button>
+        <button class="tracker-tab" data-tracker="glucose" type="button">Blood glucose</button>
+        <button class="tracker-tab" data-tracker="flare" type="button">Symptoms & flares</button>
+      </div>
+
+      <div class="tracker-layout">
+        <section class="panel tracker-panel active" id="tracker-bp" aria-labelledby="bp-form-title">
+          <h3 id="bp-form-title">Add blood pressure</h3>
+          <form id="bp-form">
+            <div class="form-grid three">
+              <label>Systolic
+                <input name="systolic" type="number" min="50" max="300" inputmode="numeric" required placeholder="120">
+              </label>
+              <label>Diastolic
+                <input name="diastolic" type="number" min="30" max="200" inputmode="numeric" required placeholder="80">
+              </label>
+              <label>Pulse <span class="optional">optional</span>
+                <input name="pulse" type="number" min="20" max="250" inputmode="numeric" placeholder="72">
+              </label>
+            </div>
+            <label>Date and time
+              <input name="datetime" type="datetime-local" required>
+            </label>
+            <fieldset>
+              <legend>New concerning symptoms now?</legend>
+              <div class="check-grid">
+                <label><input type="checkbox" name="bpSymptoms" value="chest pain"> Chest pain</label>
+                <label><input type="checkbox" name="bpSymptoms" value="shortness of breath"> Shortness of breath</label>
+                <label><input type="checkbox" name="bpSymptoms" value="weakness or numbness"> Weakness or numbness</label>
+                <label><input type="checkbox" name="bpSymptoms" value="vision or speech change"> Vision or speech change</label>
+              </div>
+            </fieldset>
+            <label>Notes <span class="optional">optional</span>
+              <textarea name="notes" rows="3" placeholder="Position, cuff, symptoms, missed dose, stress, activity..."></textarea>
+            </label>
+            <button class="primary" type="submit">Save blood pressure</button>
+          </form>
+          <div class="result-box" id="bp-result" hidden aria-live="polite"></div>
+        </section>
+
+        <section class="panel tracker-panel" id="tracker-glucose" aria-labelledby="glucose-form-title">
+          <h3 id="glucose-form-title">Add blood glucose</h3>
+          <form id="glucose-form">
+            <div class="form-grid two">
+              <label>Blood glucose (mg/dL)
+                <input name="glucose" type="number" min="20" max="700" inputmode="decimal" required placeholder="110">
+              </label>
+              <label>Timing
+                <select name="context" required>
+                  <option value="Fasting">Fasting</option>
+                  <option value="Before meal">Before meal</option>
+                  <option value="After meal">After meal</option>
+                  <option value="Bedtime">Bedtime</option>
+                  <option value="Other">Other</option>
+                </select>
+              </label>
+            </div>
+            <label>Date and time
+              <input name="datetime" type="datetime-local" required>
+            </label>
+            <fieldset>
+              <legend>Relevant situation</legend>
+              <div class="check-grid">
+                <label><input type="checkbox" name="glucoseFlags" value="shaky, sweaty, confused, or weak"> Low-sugar symptoms</label>
+                <label><input type="checkbox" name="glucoseFlags" value="ill or feverish"> Sick or feverish</label>
+                <label><input type="checkbox" name="glucoseFlags" value="vomiting or unable to keep fluids down"> Vomiting</label>
+                <label><input type="checkbox" name="glucoseFlags" value="fruity breath, deep breathing, or stomach pain"> DKA warning signs</label>
+              </div>
+            </fieldset>
+            <label>Notes <span class="optional">optional</span>
+              <textarea name="notes" rows="3" placeholder="Meal, activity, insulin or medicine taken as prescribed, symptoms..."></textarea>
+            </label>
+            <button class="primary" type="submit">Save blood glucose</button>
+          </form>
+          <div class="result-box" id="glucose-result" hidden aria-live="polite"></div>
+        </section>
+
+        <section class="panel tracker-panel" id="tracker-flare" aria-labelledby="flare-form-title">
+          <h3 id="flare-form-title">Add symptom or flare</h3>
+          <form id="flare-form">
+            <div class="form-grid two">
+              <label>Condition
+                <select name="condition" required>
+                  <option value="Arthritis">Arthritis</option>
+                  <option value="Psoriasis">Psoriasis</option>
+                  <option value="Eczema">Eczema</option>
+                  <option value="Diabetes">Diabetes</option>
+                  <option value="High blood pressure">High blood pressure</option>
+                  <option value="Other">Other</option>
+                </select>
+              </label>
+              <label>Severity: <output id="severity-output">5</output>/10
+                <input name="severity" id="severity" type="range" min="0" max="10" value="5">
+              </label>
+            </div>
+            <label>Date and time
+              <input name="datetime" type="datetime-local" required>
+            </label>
+            <label>What happened?
+              <textarea name="details" rows="4" required placeholder="Location, pain, itch, swelling, rash appearance, stiffness duration, effect on activity..."></textarea>
+            </label>
+            <label>Possible triggers or changes <span class="optional">optional</span>
+              <input name="triggers" type="text" placeholder="Stress, illness, skin injury, product, weather, food, activity...">
+            </label>
+            <label>What helped? <span class="optional">optional</span>
+              <input name="response" type="text" placeholder="Rest, prescribed treatment, moisturizer, movement...">
+            </label>
+            <button class="primary" type="submit">Save symptom entry</button>
+          </form>
+          <div class="result-box" id="flare-result" hidden aria-live="polite"></div>
+        </section>
+
+        <aside class="panel log-panel" aria-labelledby="log-title">
+          <div class="log-heading">
+            <div>
+              <p class="eyebrow">On this device</p>
+              <h3 id="log-title">Recent log</h3>
+            </div>
+            <select id="log-filter" aria-label="Filter log">
+              <option value="all">All entries</option>
+              <option value="bp">Blood pressure</option>
+              <option value="glucose">Blood glucose</option>
+              <option value="flare">Symptoms & flares</option>
+            </select>
+          </div>
+          <div id="log-list" class="log-list"></div>
+          <div class="button-stack">
+            <button class="secondary" id="export-csv" type="button">Export CSV</button>
+            <button class="secondary" id="export-json" type="button">Back up JSON</button>
+            <button class="danger" id="clear-data" type="button">Delete all local entries</button>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="view" id="view-plan" aria-labelledby="plan-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Visit preparation</p>
+          <h2 id="plan-title">My care plan notes</h2>
+          <p>Record the plan your licensed clinician gave you. Do not start, stop, or change medicines based on this app.</p>
+        </div>
+      </div>
+      <div class="plan-grid">
+        <form class="panel" id="plan-form">
+          <fieldset>
+            <legend>My conditions</legend>
+            <div class="check-grid" id="condition-checklist"></div>
+          </fieldset>
+          <label>Clinician or clinic
+            <input name="clinician" type="text" placeholder="Name and clinic">
+          </label>
+          <label>Contact details
+            <input name="contact" type="text" placeholder="Phone, email, or appointment line">
+          </label>
+          <label>My clinician-set targets
+            <textarea name="targets" rows="4" placeholder="Examples: blood pressure goal, glucose range, A1C goal, activity limits..."></textarea>
+          </label>
+          <label>Medicines and instructions
+            <textarea name="medicines" rows="5" placeholder="Name, dose, timing, and instructions exactly as prescribed"></textarea>
+          </label>
+          <label>Questions for my next visit
+            <textarea name="questions" rows="5" placeholder="What changed? What side effects or flare patterns should I discuss?"></textarea>
+          </label>
+          <button class="primary" type="submit">Save plan on this device</button>
+          <p class="form-status" id="plan-status" aria-live="polite"></p>
+        </form>
+
+        <aside class="panel appointment-card">
+          <p class="eyebrow">Bring useful evidence</p>
+          <h3>Prepare for your appointment</h3>
+          <ul class="clean-list">
+            <li>Bring your readings and symptom timeline.</li>
+            <li>List medicines, supplements, and any missed doses honestly.</li>
+            <li>Note what makes symptoms better or worse.</li>
+            <li>Report infections, pregnancy, medication reactions, or new symptoms.</li>
+            <li>Ask which targets and emergency steps apply specifically to you.</li>
+          </ul>
+          <button class="secondary" id="print-summary" type="button">Print health summary</button>
+        </aside>
+      </div>
+    </section>
+
+    <section class="view" id="view-sources" aria-labelledby="sources-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Reviewed public guidance</p>
+          <h2 id="sources-title">Sources and safety</h2>
+          <p>Content was assembled from established public-health and medical organizations. Source pages remain the authority and may be updated after this app.</p>
+        </div>
+      </div>
+      <div class="sources-grid" id="sources-grid"></div>
+      <article class="panel safety-panel">
+        <h3>Important limitations</h3>
+        <p>Dyno Health is an educational organizer, not a medical device, diagnosis service, or substitute for professional care. It does not analyze photos, prescribe treatment, calculate insulin doses, or decide whether a medicine is safe for you.</p>
+        <p>Health targets differ by age, pregnancy, kidney or heart disease, medicines, diabetes type, and other factors. Use targets and action plans set by your own care team.</p>
+        <p><strong>Privacy:</strong> Entries are stored with browser localStorage. Anyone using the same browser profile may be able to see them. Clearing browser data or using another device can erase or hide them. Export a backup before clearing data.</p>
+        <p class="review-date">Content reviewed: July 26, 2026</p>
+      </article>
+    </section>
+  </main>
+
+  <dialog id="red-flags-dialog" aria-labelledby="red-flags-title">
+    <form method="dialog" class="dialog-shell">
+      <div class="dialog-header">
+        <div>
+          <p class="eyebrow">Urgent care guide</p>
+          <h2 id="red-flags-title">Red flags that should not wait</h2>
+        </div>
+        <button class="icon-button" value="cancel" aria-label="Close">×</button>
+      </div>
+      <div class="red-flag-list">
+        <section><h3>Blood pressure</h3><p>Above 180/120 mm Hg with chest pain, shortness of breath, weakness, numbness, vision change, or trouble speaking: call emergency services. Without symptoms, repeat after at least one minute and contact a health professional promptly if still that high.</p></section>
+        <section><h3>Diabetes</h3><p>Severe low blood sugar, unconsciousness, seizure, inability to swallow, high ketones, fruity breath, deep breathing, repeated vomiting, or inability to keep fluids down needs immediate help.</p></section>
+        <section><h3>Skin</h3><p>Fever with rapidly spreading redness, warmth, swelling, pus, yellow crusts, severe pain, or clusters of painful blisters can signal infection and needs urgent assessment.</p></section>
+        <section><h3>Joints</h3><p>A suddenly very painful, hot, swollen joint with fever, chills, or feeling very unwell can be a joint infection and needs urgent medical assessment.</p></section>
+      </div>
+      <button class="primary" value="cancel">Close</button>
+    </form>
+  </dialog>
+
+  <footer>
+    <p>Dyno Health stores data locally. Educational use only.</p>
+  </footer>
+
+  <noscript><p class="noscript">JavaScript is required for tracking and navigation. The condition information remains available only when JavaScript is enabled.</p></noscript>
+  <script src="app.js" defer></script>
+</body>
+</html>
